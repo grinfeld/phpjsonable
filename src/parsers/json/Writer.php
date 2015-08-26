@@ -6,7 +6,9 @@
 
 namespace grinfeld\phpjsonable\parsers\json;
 
+use grinfeld\phpjsonable\transformers\TransformerFactory;
 use grinfeld\phpjsonable\utils\Configuration;
+use grinfeld\phpjsonable\utils\streams\OutputStream;
 
 class Writer {
     /**
@@ -18,7 +20,18 @@ class Writer {
      * Writer constructor.
      * @param Configuration $conf
      */
-    public function __construct(Configuration $conf) { $this->conf = $conf; }
+    public function __construct(Configuration $conf) {
+        if ($conf == null)
+            $this->conf = new Configuration();
+        else
+            $this->conf = $conf;
+    }
 
-
+    /**
+     * @param $obj
+     * @param OutputStream $output
+     */
+    public function parse($obj, OutputStream $output) {
+        return TransformerFactory::get($obj)->transform($obj, $output, $this->conf);
+    }
 }
