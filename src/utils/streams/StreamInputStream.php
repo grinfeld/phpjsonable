@@ -12,7 +12,7 @@ class StreamInputStream implements InputStream {
 
     /**
      * StreamInputStream constructor.
-     * @param $sr
+     * @param resource $sr
      */
     public function __construct($sr) { $this->sr = $sr; }
 

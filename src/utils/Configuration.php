@@ -10,7 +10,9 @@ class Configuration {
 
     const CLASS_PROPERTY = "class_property";
     const DEFAULT_CLASS_PROPERTY_VALUE = "class";
-    
+
+    const EXCLUDE_NULL_PROPERTY = "exclude_null";
+
     protected $properties = array();
 
     /**
@@ -37,7 +39,7 @@ class Configuration {
     public function getBoolean($name, $def = null) {
         $val = $this->get($name);
         if ($val != null) {
-            return $val !== false && $val !== "false" && $val !== 0 && $val !== "0";
+            return $val !== false && $val !== "false" && $val !== 0 && $val !== "0" ? true : false;
         }
         return $def;
     }

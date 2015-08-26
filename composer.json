@@ -1,6 +1,7 @@
 {
   "name": "grinfeld/phpjsonable",
   "type": "library",
+  "version": "0.0.9",
   "description" : "Simple json encode and decode object",
   "keywords": ["json", "json_encode", "json_decode"],
   "license": "MIT",
