@@ -24,7 +24,7 @@ class Json {
 
     /**
      * Encodes object $obj to JSON and writes it into OutputStream $output
-     * @param $obj object to be encoded
+     * @param mixed $obj object to be encoded
      * @param OutputStream $output OutputStream to write encoded data in
      * @param Configuration|null $conf configuration to be used
      */
