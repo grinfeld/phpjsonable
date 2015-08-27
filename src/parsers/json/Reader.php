@@ -7,6 +7,7 @@
 namespace grinfeld\phpjsonable\parsers\json;
 
 use grinfeld\phpjsonable\utils\Configuration;
+use grinfeld\phpjsonable\utils\strategy\LanguageStrategyFactory;
 use grinfeld\phpjsonable\utils\streams\InputStream;
 use grinfeld\phpjsonable\utils\Pair;
 
@@ -99,7 +100,8 @@ class Reader {
 
     private function createClass($m) {
         $cl = $this->conf->getString(Configuration::CLASS_PROPERTY, Configuration::DEFAULT_CLASS_PROPERTY_VALUE);
-        $className = str_replace(".", "\\", $m[$cl]);
+        $clazzStrategy = $this->conf->getString(Configuration::CLASS_TYPE_PROPERTY, LanguageStrategyFactory::LANG_PHP);
+        $className = LanguageStrategyFactory::getClassStrategy($clazzStrategy)->className($m[$cl]);
         $refClass = new \ReflectionClass($className);
         // TODO: add try catch
         $obj = $refClass->newInstanceArgs(array());

@@ -3,7 +3,8 @@
 use grinfeld\phpjsonable\utils\streams\StringInputStream;
 use grinfeld\phpjsonable\parsers\json\Reader;
 use grinfeld\phpjsonable\parsers\json\Json;
-
+use grinfeld\phpjsonable\utils\Configuration;
+use grinfeld\phpjsonable\utils\strategy\LanguageStrategyFactory;
 /**
  * @author Grinfeld Mikhail
  * @since 8/24/2015.
@@ -91,8 +92,15 @@ class ReaderTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(2, $l[1], "should " . $l[1] . " == 2");
         $this->assertEquals(3, $l[2], "should " . $l[2] . " == 3");
 
-        $str = "{\"class\":\"grinfeld.phpjsonable.utils.Pair\",\"left\":100,\"right\":\"Test\"}";
+        $str = "{\"class\":\"grinfeld\\phpjsonable\\utils\\Pair\",\"left\":100,\"right\":\"Test\"}";
         $fp = new StringInputStream($str);
+        $result = (new Reader($fp))->parse();
+        $this->assertEquals("grinfeld\\phpjsonable\\utils\\Pair", get_class($result), "should " . get_class($result) . " == grinfeld\\phpjsonable\\utils\\Pair");
+        $this->assertEquals(100, $result->getLeft(), "should " . $result->getLeft() . " == 100");
+        $this->assertEquals("Test", $result->getRight(), "should " . $result->getRight() . " == Test");
+
+        $str = "{\"class\":\"grinfeld.phpjsonable.utils.Pair\",\"left\":100,\"right\":\"Test\"}";
+        $fp = new StringInputStream($str, (new Configuration())->push(Configuration::CLASS_TYPE_PROPERTY, LanguageStrategyFactory::LANG_JAVA));
         $result = (new Reader($fp))->parse();
         $this->assertEquals("grinfeld\\phpjsonable\\utils\\Pair", get_class($result), "should " . get_class($result) . " == grinfeld\\phpjsonable\\utils\\Pair");
         $this->assertEquals(100, $result->getLeft(), "should " . $result->getLeft() . " == 100");

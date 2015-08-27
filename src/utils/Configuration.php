@@ -11,7 +11,11 @@ class Configuration {
     const CLASS_PROPERTY = "class_property";
     const DEFAULT_CLASS_PROPERTY_VALUE = "class";
 
+    const INCLUDE_CLASS_NAME_PROPERTY = "include_class";
+
     const EXCLUDE_NULL_PROPERTY = "exclude_null";
+
+    const CLASS_TYPE_PROPERTY = "classname_strategy";
 
     protected $properties = array();
 
@@ -21,6 +25,10 @@ class Configuration {
      */
     public function __construct(array $properties = array()) { $this->properties = $properties; }
 
+    public function push($name, $value) {
+        $this->properties[$name] = $value;
+        return $this;
+    }
     /**
      * @param $name
      * @return mixed
@@ -40,6 +48,14 @@ class Configuration {
         $val = $this->get($name);
         if ($val != null) {
             return $val !== false && $val !== "false" && $val !== 0 && $val !== "0" ? true : false;
+        }
+        return $def;
+    }
+
+    public function getInt($name, $def = null) {
+        $val = $this->get($name);
+        if ($val != null && (is_int($val) || (is_string($val) && preg_replace("/[0-9]/", "", $val) == ""))) {
+            return (int)$val;
         }
         return $def;
     }
