@@ -20,4 +20,13 @@ class StreamOutputStream implements OutputStream {
     public function write($str) {
         fputs($this->sr, $str);
     }
+
+    /**
+     * returns rewind resource
+     * @return resource
+     */
+    public function get() {
+        rewind($this->sr);
+        return $this->sr;
+    }
 }
