@@ -16,6 +16,6 @@ class FloatTransformer implements Transformer {
     }
 
     public function transform($obj, OutputStream $output, Configuration $conf) {
-        $output->write(floatval($obj));
+        $output->write("" . floatval($obj));
     }
 }

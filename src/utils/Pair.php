@@ -62,5 +62,4 @@ class Pair {
      */
     public function setValue2($value2) { $this->right = $value2; }
 
-
 }

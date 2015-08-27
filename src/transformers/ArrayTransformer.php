@@ -30,7 +30,7 @@ class ArrayTransformer implements Transformer {
         foreach($obj as $elem) {
             if ($i != 0)
                 $output->write(",");
-            TransformerFactory::get($elem).transform($elem, $output);
+            TransformerFactory::get($elem)->transform($elem, $output, $conf);
             $i++;
         }
         $output->write("]");

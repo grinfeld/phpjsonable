@@ -16,6 +16,6 @@ class IntTransformer implements Transformer {
     }
 
     public function transform($obj, OutputStream $output, Configuration $conf) {
-        $output->write(intval($obj));
+        $output->write("" . intval($obj));
     }
 }

@@ -36,7 +36,7 @@ class MapTransformer implements Transformer {
             if ($i != 0)
                 $output->write(",");
             $output->write("\"" . JsonEscapeUtils::escapeJson($key) . "\":");
-            TransformerFactory::get($value).transform($value, $output);
+            TransformerFactory::get($value)->transform($value, $output, $conf);
             $i++;
         }
         $output->write("}");

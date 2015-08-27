@@ -40,13 +40,14 @@ class BeanTransformer implements Transformer {
             $clazzName = $conf->getString(Configuration::CLASS_PROPERTY, Configuration::DEFAULT_CLASS_PROPERTY_VALUE);
             $clazzStrategy = $conf->getString(Configuration::CLASS_TYPE_PROPERTY, LanguageStrategyFactory::LANG_PHP);
             foreach($props as $prop) {
+                $prop->setAccessible(true);
                 $val = $prop->getValue($obj);
                 if ($excludeNull === false || $val != null) {
                     if ($prop->getName() != $clazzName) {
                         if ($i != 0)
                             $output->write(",");
                         $output->write("\"" . JsonEscapeUtils::escapeJson($prop->getName()) . "\":");
-                        TransformerFactory::get($val) . transform($val, $output);
+                        TransformerFactory::get($val)->transform($val, $output, $conf);
                         $i++;
                     } else {
                         $clazz = $val;
@@ -55,6 +56,8 @@ class BeanTransformer implements Transformer {
             }
             if ($includeClass) {
                 $clazz = LanguageStrategyFactory::getClassStrategy($clazzStrategy)->className($clazz);
+                if ($i != 0)
+                    $output->write(",");
                 $output->write("\"$clazzName\":\"$clazz\"");
             }
             $output->write("}");

@@ -14,7 +14,7 @@ use grinfeld\phpjsonable\utils\streams\OutputStream;
 class StringTransformer implements Transformer {
 
     public function match($obj) {
-        return (is_string($obj) || preg_replace("/[0-9]/", "", $obj) != "");
+        return (is_string($obj) && preg_replace("/[0-9]/", "", $obj) != "");
     }
 
     public function transform($obj, OutputStream $output, Configuration $conf) {
