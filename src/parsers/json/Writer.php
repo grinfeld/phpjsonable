@@ -15,23 +15,24 @@ class Writer {
      * @var Configuration
      */
     protected $conf;
+    protected $out;
 
     /**
      * Writer constructor.
      * @param Configuration $conf
      */
-    public function __construct(Configuration $conf = null) {
+    public function __construct(OutputStream $output, Configuration $conf = null) {
         if ($conf == null)
             $this->conf = new Configuration();
         else
             $this->conf = $conf;
+        $this->out = $output;
     }
 
     /**
      * @param $obj
-     * @param OutputStream $output
      */
-    public function parse($obj, OutputStream $output) {
-        return TransformerFactory::get($obj)->transform($obj, $output, $this->conf);
+    public function parse($obj) {
+        TransformerFactory::get($obj)->transform($obj, $this->out, $this->conf);
     }
 }

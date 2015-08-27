@@ -2,6 +2,7 @@
 
 use grinfeld\phpjsonable\utils\streams\StringInputStream;
 use grinfeld\phpjsonable\parsers\json\Reader;
+use grinfeld\phpjsonable\parsers\json\Json;
 
 /**
  * @author Grinfeld Mikhail
@@ -10,6 +11,11 @@ use grinfeld\phpjsonable\parsers\json\Reader;
 class ReaderTest extends PHPUnit_Framework_TestCase {
 
     public function testParse() {
+        $str = "111";
+        $fp = new StringInputStream($str);
+        $res = Json::decode($fp);
+        $this->assertEquals(111, $res, "should $res == 111");
+
         $str = "111";
         $fp = new StringInputStream($str);
         $res = (new Reader($fp))->parse();

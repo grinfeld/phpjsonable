@@ -10,7 +10,7 @@ use \grinfeld\phpjsonable\parsers\json\Writer;
 class WriterTest extends PHPUnit_Framework_TestCase {
     public function testParse() {
         $str = new StringOutputStream();
-        (new Writer())->parse("string", $str);
+        (new Writer($str))->parse("string");
         $this->assertEquals("\"string\"", $str->toString(), "Should be \"string\"");
     }
 }
