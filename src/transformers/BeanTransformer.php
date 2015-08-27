@@ -6,6 +6,7 @@
 
 namespace grinfeld\phpjsonable\transformers;
 
+use grinfeld\phpjsonable\utils\JsonEscapeUtils;
 use grinfeld\phpjsonable\utils\streams\OutputStream;
 use grinfeld\phpjsonable\utils\Configuration;
 
@@ -38,6 +39,7 @@ class BeanTransformer implements Transformer {
                 if ($excludeNull === false || $val != null) {
                     if ($i != 0)
                         $output->write(",");
+                    $output->write("\"" . JsonEscapeUtils::escapeJson($prop->getName()) . "\":");
                     TransformerFactory::get($val) . transform($val, $output);
                     $i++;
                 }

@@ -14,8 +14,8 @@ class JsonEscapeUtils {
      * @return string
      */
     static function escapeJson($value) {
-        $escapers = array("\\", "/", "\"", "\n", "\r", "\t", "\x08", "\x0c");
-        $replacements = array("\\\\", "\\/", "\\\"", "\\n", "\\r", "\\t", "\\f", "\\b");
+        $escapers = array("\\", "/", "\"", "\n", "\r", "\t");
+        $replacements = array("\\\\", "\\/", "\\\"", "\\n", "\\r", "\\t");
         $result = str_replace($escapers, $replacements, $value);
         return $result;
     }

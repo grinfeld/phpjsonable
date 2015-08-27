@@ -7,6 +7,7 @@
 namespace grinfeld\phpjsonable\transformers;
 
 use grinfeld\phpjsonable\utils\Configuration;
+use grinfeld\phpjsonable\utils\JsonEscapeUtils;
 use grinfeld\phpjsonable\utils\streams\OutputStream;
 
 class MapTransformer implements Transformer {
@@ -31,10 +32,11 @@ class MapTransformer implements Transformer {
     public function transform($obj, OutputStream $output, Configuration $conf) {
         $i = 0;
         $output->write("{");
-        foreach($obj as $elem) {
+        while(list($key, $value) = each($obj)) {
             if ($i != 0)
                 $output->write(",");
-            TransformerFactory::get($elem).transform($elem, $output);
+            $output->write("\"" . JsonEscapeUtils::escapeJson($key) . "\":");
+            TransformerFactory::get($value).transform($value, $output);
             $i++;
         }
         $output->write("}");

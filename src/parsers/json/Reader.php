@@ -24,6 +24,17 @@ class Reader {
     const TAB_CHAR = '\t';
     const EMPTY_CHAR = '\0';
 
+    private static $convert = array(
+        "\\\\" => self::ESCAPE_CHAR,
+        "\\\"" => self::STRING_CHAR,
+        "\\t" => self::TAB_CHAR,
+        "\\'" => self::CHAR_CHAR,
+        "\\n" => "\n",
+        "\\r" => "\r",
+        "\\/" => "/"
+    );
+
+
     /**
      * @var /SplQueue
      */
@@ -141,7 +152,7 @@ class Reader {
             case self::CHAR_CHAR:
                 $sb = "";
                 $this->queue->enqueue($sb);
-                $c = $this->parseString($sb);
+                $c = $this->parseString($c, $sb);
                 $pn = trim($sb);
                 $this->queue->dequeue();
                 if (strtolower($pn) == "null")
@@ -274,11 +285,19 @@ class Reader {
      * @param $sb
      * @return string
      */
-    private function parseString (&$sb) {
+    private function parseString ($prevC, &$sb) {
         $c = self::SPACE_CHAR;
-        $prevC = self::SPACE_CHAR;
         while (false !== ($c = $this->in->nextChar()) && !($prevC != self::ESCAPE_CHAR && ($c == self::CHAR_CHAR || $c == self::STRING_CHAR))) {
-            $sb = $sb . $c;
+            if ($c == self::ESCAPE_CHAR) {
+                //$sb = $sb . $c;
+                //$prevC = $c;
+            } else if ($prevC == self::ESCAPE_CHAR && isset(self::$convert[$prevC . $c])) {
+                $sb = $sb . self::$convert[$prevC . $c];
+            } else if ($prevC == self::ESCAPE_CHAR) {
+                $sb = $sb . $prevC . $c;
+            } else {
+                $sb = $sb . $c;
+            }
             $prevC = $c;
         }
         return $c;

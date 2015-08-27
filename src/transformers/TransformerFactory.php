@@ -18,12 +18,7 @@ class TransformerFactory {
      */
     public static function get($obj) {
         if (self::$transformers == null) {
-            $rs = sem_get(self::SEM_KEY);
-            sem_acquire($rs);
-            if (self::$transformers == null){
                 self::init();
-            }
-            sem_release($rs);
         }
         foreach(self::$transformers as $transformer) {
             if ($transformer->match($obj))
@@ -38,7 +33,7 @@ class TransformerFactory {
     /**
      * TransformerFactory constructor.
      */
-    public function init() {
+    public static function init() {
         // order is important !!!
         self::$transformers = array(
             new NullTransformer(),

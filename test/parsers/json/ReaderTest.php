@@ -25,6 +25,21 @@ class ReaderTest extends PHPUnit_Framework_TestCase {
         $res = (new Reader($fp))->parse();
         $this->assertEquals("hello", $res, "should $res == hello");
 
+        $str = "\"he\\\"llo\"";
+        $fp = new StringInputStream($str);
+        $res = (new Reader($fp))->parse();
+        $this->assertEquals("he\"llo", $res, "should $res == he\"llo");
+
+        $str = "\"he\\'llo\"";
+        $fp = new StringInputStream($str);
+        $res = (new Reader($fp))->parse();
+        $this->assertEquals("he'llo", $res, "should $res == he'llo");
+
+        $str = "\"he\\nllo\"";
+        $fp = new StringInputStream($str);
+        $res = (new Reader($fp))->parse();
+        $this->assertEquals("he\nllo", $res, "should $res == he\nllo");
+
         $str = "{\"key1\":\"hello\"}";
         $fp = new StringInputStream($str);
         $res = (new Reader($fp))->parse();

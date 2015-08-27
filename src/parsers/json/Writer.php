@@ -20,7 +20,7 @@ class Writer {
      * Writer constructor.
      * @param Configuration $conf
      */
-    public function __construct(Configuration $conf) {
+    public function __construct(Configuration $conf = null) {
         if ($conf == null)
             $this->conf = new Configuration();
         else
