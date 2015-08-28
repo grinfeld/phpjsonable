@@ -6,8 +6,6 @@ PHPjsonable is small php library to decode simple bean objects from and to Json 
 Since it has come from Java, you will find java "terms" like **InputStream** and **OutputStream**.
 These objects simply wrappers for stream/string in PHP.
 
-Let's start with examples. 
-
 Actually, if you need JSON serializer only for built-in types in PHP (array, int, string, bool) - you prefer to use built-in [json_encode](http://php.net/manual/en/function.json-encode.php) and [json_decode](http://php.net/manual/en/function.json-decode.php)
 In such case you don't need my library :)
 
@@ -44,3 +42,37 @@ Let's see example when you receive response from some remote server:
     $myResult = Json::decode($input);
     echo $myResult["status"];
     // output: OK
+    
+After few basics, now we can move to more complicated examples. As I've already said, this package is for serializing objects and not simple PHP structures.
+Let's see few examples:
+
+Assume, you have **Foo** class:
+
+    class Foo {
+        protected $str;
+        protected $num;
+        protected $ar;
+        
+        public function __construct() {
+            $this->str = "Hello";
+            $this->num = 100;
+            $this->ar = array(1,2,3,4);
+        }
+    }
+    
+Now, we send this class to some remote server:
+ 
+    $output = new StringOutputStream(); // creating output wrapper for string
+    Json::encode($ar, $output);
+    // $output->toString() will return: "{"str":"Hello","num":100,"ar":[1,2,3,4]}" 
+    // sending data (by calling $output->toString()) to server (use your prefer http tool) 
+    ......
+    ......
+    ......
+    $response = "...."; // getting response "{\"status":100, "description":"OK"}"
+    $myResult = Json::decode(new StringInputStream($response));
+    echo $myResult["status"] . " --- " . $myResult["description"]; // output    
+
+As we can see, our remote server receives nice JSON string, does anything it should and returns response we can read. 
+If you sure that response is always returned as assoc array, sequence array or any PHP built-in type, you can replace
+*$myResult = Json::decode(new StringInputStream($response));* to *$myResult = json_decode($response)*
