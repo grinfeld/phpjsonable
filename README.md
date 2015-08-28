@@ -32,3 +32,6 @@ Let's see same example, but when we need to store data in a file
     fclose($fp);
     echo file_get_contents("some.json");
     // file content is the same as in previous example: "["hello", "bye", "something else"]" 
+    
+Actually *StreamOutputStream* wraps any PHP streams which has fputs function: "php:file://" , "php://memory", "php://temp" and etc.
+If you need your own stream, create class which implements *OutputStream* and has method _write($str)_. 
