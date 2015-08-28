@@ -6,7 +6,6 @@
 
 namespace grinfeld\phpjsonable\utils\strategy;
 
-
 class LanguageStrategyFactory {
     private static $instances = null;
 
@@ -27,7 +26,14 @@ class LanguageStrategyFactory {
         return self::$instances[self::LANG_PHP];
     }
 
-
+    public static function addStrategy($type, LanguageStrategy $obj) {
+        $newInstances = array();
+        // copying existed
+        while (list($key, $val) = each(self::$instances)) {
+            $newInstances["" . $key] = $val;
+        }
+        $newInstances["" . $type] = $obj;
+    }
 
     private static function init(){
         self::$instances = array(

@@ -28,8 +28,6 @@ class TransformerFactory {
         throw new \Exception("Appropriate transformer not found for " . $obj);
     }
 
-
-
     /**
      * TransformerFactory constructor.
      */
