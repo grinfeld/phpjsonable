@@ -39,6 +39,7 @@ class TransformerFactory {
             new NullTransformer(),
             new IntTransformer(),
             new FloatTransformer(),
+            new BooleanTransformer(),
             new StringTransformer(),
             new ArrayTransformer(),
             new MapTransformer(),

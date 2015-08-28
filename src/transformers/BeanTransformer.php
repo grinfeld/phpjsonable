@@ -42,7 +42,7 @@ class BeanTransformer implements Transformer {
             foreach($props as $prop) {
                 $prop->setAccessible(true);
                 $val = $prop->getValue($obj);
-                if ($excludeNull === false || $val != null) {
+                if ($excludeNull === false || ($val !== null || $val !== "")) {
                     if ($prop->getName() != $clazzName) {
                         if ($i != 0)
                             $output->write(",");

@@ -17,7 +17,7 @@ class NullTransformer implements Transformer {
      * @return bool
      */
     public function match($obj) {
-        return $obj == null;
+        return $obj === null;
     }
 
     /**

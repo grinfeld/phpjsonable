@@ -72,7 +72,7 @@ class Reader {
         if (!$this->in->isReady())
             return null;
         $resp = $this->parseRecursive();
-        if (isset($resp) && $resp != null && $resp->getRight() != null) {
+        if (isset($resp) && $resp != null && $resp->getRight() !== null) {
             return $resp->getRight();
         }
         return null;
@@ -88,7 +88,7 @@ class Reader {
                 $p = $this->parseStructure($c);
                 $o = $p->getRight();
                 $c = $p->getLeft();
-                if ($o != null) {
+                if ($o !== null) {
                     return new Pair($c, $o);
                 } else if ($c != self::ELEM_DELIM) {
                     $sb = $sb . $c;
@@ -166,8 +166,11 @@ class Reader {
                 $c = $this->parseNumber($sb);
                 $pn = trim($sb);
                 $this->queue->dequeue();
-                if (strtolower($pn) == "null")
+                if (strtolower($pn) == "false" || strtolower($pn) == "true") {
+                    return new Pair($c, strtolower($pn) == "false" ? false : true);
+                } else if (strtolower($pn) == "null") {
                     return new Pair($c, "");
+                }
                 if (preg_replace("/[0-9]/", "", $pn) == "") {
                     $o = intval($pn);
                 } else if (preg_replace("/[0-9\.]/", "", $pn) == "") {
@@ -288,8 +291,9 @@ class Reader {
      * @return string
      */
     private function parseString ($prevC, &$sb) {
+        $startC = $prevC;
         $c = self::SPACE_CHAR;
-        while (false !== ($c = $this->in->nextChar()) && !($prevC != self::ESCAPE_CHAR && ($c == self::CHAR_CHAR || $c == self::STRING_CHAR))) {
+        while (false !== ($c = $this->in->nextChar()) && !($prevC != self::ESCAPE_CHAR && ($c == $startC))) {
             if ($c == self::ESCAPE_CHAR) {
                 //$sb = $sb . $c;
                 //$prevC = $c;
@@ -316,7 +320,7 @@ class Reader {
                 $p = $this->parseStructure($c);
                 $o = $p->getRight();
                 $c = $p->getLeft();
-                if ($o != null) {
+                if ($o !== null) {
                     return $p;
                 } else if ($c != self::ELEM_DELIM) {
                     if (!(strlen($sb) == 0 && $c == self::EMPTY_CHAR)) // avoid empty string at the beginning
