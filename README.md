@@ -3,7 +3,7 @@ PHP jsonable
 
 PHPjsonable is small php library to decode simple bean objects from and to Json format (Actually it's conversion of mine Java jsonable library with light changes to make it suitable with PHP)
 
-Since it has come from Java, you will find java "terms" like InputStream and OutputStream.
+Since it has come from Java, you will find java "terms" like **InputStream** and **OutputStream**.
 These objects simply wrappers for stream/string in PHP.
 
 Let's start with examples. 
@@ -33,5 +33,14 @@ Let's see same example, but when we need to store data in a file
     echo file_get_contents("some.json");
     // file content is the same as in previous example: "["hello", "bye", "something else"]" 
     
-Actually *StreamOutputStream* wraps any PHP streams which has fputs function: "php:file://" , "php://memory", "php://temp" and etc.
-If you need your own stream, create class which implements *OutputStream* and has method _write($str)_. 
+Actually **StreamOutputStream** wraps any PHP streams which has *fputs* function: "php:file://" , "php://memory", "php://temp" and etc.
+If you need your own stream, create class which implements **OutputStream** and has method *write($str)*. 
+
+
+Let's see example when you receive response from some remote server:
+
+    $content = "..." // let's assume you received: "{\"status":"OK"}"
+    $input = new StringInputStream($content);
+    $myResult = Json::decode($input);
+    echo $myResult["status"];
+    // output: OK
