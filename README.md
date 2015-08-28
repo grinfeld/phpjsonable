@@ -8,16 +8,27 @@ These objects simply wrappers for stream/string in PHP.
 
 Let's start with examples. 
 
-First example is about array. Actually, if you need JSON serializer only for built-in types in PHP (array, int, string, bool) - you prefer to use built-in [json_encode](http://php.net/manual/en/function.json-encode.php) and [json_decode](http://php.net/manual/en/function.json-decode.php)
+Actually, if you need JSON serializer only for built-in types in PHP (array, int, string, bool) - you prefer to use built-in [json_encode](http://php.net/manual/en/function.json-encode.php) and [json_decode](http://php.net/manual/en/function.json-decode.php)
 In such case you don't need my library :)
-So, let's start: Assume you have php array:
+
+So, let's start with few simple examples: Assume you have php array:
 
     $ar = ["hello", "bye", "something else"];
     
 and you need to send it to some remote server using JSON format.
+
 So, let's assume you need it outputted into string (in order to send using curl, guzzle or other http tool)
 
     $output = new StringOutputStream(); // creating output wrapper for string
     Json::encode($ar, $output);
     echo $output->toString();
     // output will be: "["hello", "bye", "something else"]" 
+
+Let's see same example, but when we need to store data in a file
+
+    $fp = fopen("some.json", "r+")
+    $output = new StreamOutputStream($fp); // creating output wrapper for string
+    Json::encode($ar, $output);
+    fclose($fp);
+    echo file_get_contents("some.json");
+    // file content is the same as in previous example: "["hello", "bye", "something else"]" 
