@@ -49,8 +49,6 @@ class BeanTransformer implements Transformer {
                         $output->write("\"" . JsonEscapeUtils::escapeJson($prop->getName()) . "\":");
                         TransformerFactory::get($val)->transform($val, $output, $conf);
                         $i++;
-                    } else {
-                        $clazz = $val;
                     }
                 }
             }
