@@ -76,7 +76,8 @@ Now, we send this class to some remote server:
  
     $output = new StringOutputStream(); // creating output wrapper for string
     Json::encode($ar, $output);
-    // $output->toString() will return: "{"str":"Hello","num":100,"ar":[1,2,3,4]}" 
+    // $output->toString() will return: 
+    // "{"str":"Hello","num":100,"ar":[1,2,3,4]}" 
     // sending data (by calling $output->toString()) to server (use your prefer http tool) 
     ......
     ......
@@ -93,8 +94,10 @@ Think about option you remote server need to de-serialize, data it has received 
 it's own implementation. We can help him by sending him class name (by default this option is off). We need to add Configuration to our encode method.
 
     $output = new StringOutputStream(); // creating output wrapper for string
-    Json::encode($ar, $output, new Configuration(array(Configuration::INCLUDE_CLASS_NAME_PROPERTY => "true")));
-    // $output->toString() will return: "{"str":"Hello","num":100,"ar":[1,2,3,4], "class": "myApp\Foo"}" 
+    Json::encode($ar, 
+        $output, new Configuration(array(Configuration::INCLUDE_CLASS_NAME_PROPERTY => "true")));
+    // $output->toString() will return: 
+    // "{"str":"Hello","num":100,"ar":[1,2,3,4], "class": "myApp\Foo"}" 
     // sending data (by calling $output->toString()) to server (use your prefer http tool) 
     ......
     ......
@@ -111,12 +114,23 @@ into:
         Configuration::INCLUDE_CLASS_NAME_PROPERTY => "true",
         Configuration::CLASS_TYPE_PROPERTY => LanguageStrategyFactory::LANG_JAVA
      ))
-    // it will output Foo request in following way: "{"str":"Hello","num":100,"ar":[1,2,3,4], "class": "myApp.Foo"}"   
+    // it will output Foo request in following way: 
+    // "{"str":"Hello","num":100,"ar":[1,2,3,4], "class": "myApp.Foo"}"   
 
-Now, you'll say that Foo class in your code not in same package (namespace and etc) and you don't want to expose your code structure to
-any outside of your app. You are write. The problem, that I don't know to read minds and predict code you'll write tomorrow, next week and next year,
+Now, you'll say that Foo class in your code not in the same package (namespace and etc) and you don't want to expose your code structure to
+anybody outside of your app. You're write. The problem, that I don't know to read minds and predict code you'll write tomorrow, next week and next year,
 so in this case you'll need to work little bit more:
-Create you own class name converter strategy by extending *LanguageStrategy* class. It has only one method you need to implement: `className($obj)`.
+Create you own class name converter strategy by implementing *LanguageStrategy* interface. It has only one method you need to implement: `className($obj)`.
 It receives object and returns string (which represents class name). Somewhere before starting encode/decode, add your implementation into
 LanguageStrategyFactory: `LanguageStrategyFactory::addStrategy(int $type, LanguageStrategy yourStrategy)`. Remember that first three options are occupied
 by mine built-in strategies (0 -> PHP, 1 -> Java, 3 -> .NET). Actually, you can override one of them by using $type between 0-2. It's your decision.
+
+Great! But why you need to use so obvious "class" property? Maybe, better to use "itsnotclass" instead of it? Yes, it's possible. Simply add to your configuration
+additional property:
+ 
+    new Configuration(array(
+        Configuration::INCLUDE_CLASS_NAME_PROPERTY => "true",
+        Configuration::CLASS_PROPERTY => "itsnotclass"
+    ))
+    // it will output Foo request in following way: 
+    // "{"str":"Hello","num":100,"ar":[1,2,3,4], "itsnotclass": "myApp\Foo"}"   
