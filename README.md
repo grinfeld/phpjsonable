@@ -123,7 +123,15 @@ so in this case you'll need to work little bit more:
 Create you own class name converter strategy by implementing *LanguageStrategy* interface. It has only one method you need to implement: `className($obj)`.
 It receives object and returns string (which represents class name). Somewhere before starting encode/decode, add your implementation into
 LanguageStrategyFactory: `LanguageStrategyFactory::addStrategy(int $type, LanguageStrategy yourStrategy)`. Remember that first three options are occupied
-by mine built-in strategies (0 -> PHP, 1 -> Java, 2 -> .NET). Actually, you can override one of them by using $type between 0-2. It's your decision.
+by mine built-in strategies (0 -> PHP, 1 -> Java, 2 -> .NET). Actually, you can override one of them by using $type between 0-2. It's your decision. And finally use 
+**Configuration** with your own type:
+ 
+    new Configuration(array(
+        Configuration::INCLUDE_CLASS_NAME_PROPERTY => "true",
+        Configuration::CLASS_TYPE_PROPERTY => $YourOwnType
+     ))
+    // it will output Foo request in following way: 
+    // "{"str":"Hello","num":100,"ar":[1,2,3,4], "class": "myApp.Foo"}"     
 
 Great! But why you need to use so obvious "class" property? Maybe, better to use "itsnotclass" instead of it? Yes, it's possible. Simply add to your configuration
 additional property:
