@@ -11,10 +11,12 @@ Let's start with examples.
 First example is about array. Actually, if you need JSON serializer only for built-in types in PHP (array, int, string, bool) - you prefer to use built-in [json_encode](http://php.net/manual/en/function.json-encode.php) and [json_decode](http://php.net/manual/en/function.json-decode.php)
 In such case you don't need my library :)
 So, let's start: Assume you have php array:
+
     $ar = ["hello", "bye", "something else"];
     
 and you need to send it to some remote server using JSON format.
 So, let's assume you need it outputted into string (in order to send using curl, guzzle or other http tool)
+
     $output = new StringOutputStream(); // creating output wrapper for string
     Json::encode($ar, $output);
     echo $output->toString();
