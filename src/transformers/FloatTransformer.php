@@ -12,7 +12,7 @@ use grinfeld\phpjsonable\utils\Configuration;
 class FloatTransformer implements Transformer {
 
     public function match($obj) {
-        return is_float($obj) || (is_string($obj) && $obj !== "" && preg_replace("/[0-9\.]/", "", $obj) == "");
+        return is_float($obj);
     }
 
     public function transform($obj, OutputStream $output, Configuration $conf) {

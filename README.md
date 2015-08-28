@@ -4,7 +4,7 @@ PHP jsonable
 PHPjsonable is small php library to decode simple bean objects from and to Json format (Actually it's conversion of mine Java jsonable library with light changes to make it suitable with PHP)
 
 Since it has come from Java, you will find java "terms" like **InputStream** and **OutputStream**.
-These objects simply wrappers for stream/string in PHP.
+These objects simply wrappers for stream/string in PHP. (I hope in feature I'll implement this with PSR-7 Http\Message)
 
 Actually, if you need JSON serializer only for built-in types in PHP (array, int, string, bool) - you prefer to use built-in [json_encode](http://php.net/manual/en/function.json-encode.php) and [json_decode](http://php.net/manual/en/function.json-decode.php)
 In such case you don't need my library :)
@@ -145,7 +145,7 @@ OK, after nice discussion about "class" and options we have from topic above, le
 
 That's it. I hope it was helpful.       
      
-Bugs, changes requests
+Bugs, change requests
 -------------------
 
 Write me to github@mikerusoft.com     

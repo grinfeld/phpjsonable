@@ -12,7 +12,7 @@ use grinfeld\phpjsonable\utils\Configuration;
 class IntTransformer implements Transformer {
 
     public function match($obj) {
-        return is_int($obj) || (is_string($obj) && preg_replace("/[0-9]/", "", $obj) == "");
+        return is_int($obj);
     }
 
     public function transform($obj, OutputStream $output, Configuration $conf) {
