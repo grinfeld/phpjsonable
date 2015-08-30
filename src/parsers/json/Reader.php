@@ -84,7 +84,7 @@ class Reader {
     private function parseRecursive() {
         $sb = "";
         while (false !== ($c = $this->in->nextChar())) {
-            if ($c != self::SPACE_CHAR && $c != self::TAB_CHAR) {
+            if ($c != self::SPACE_CHAR && $c != self::TAB_CHAR && $c != "\r" && $c != "\n") {
                 $p = $this->parseStructure($c);
                 $o = $p->getRight();
                 $c = $p->getLeft();
@@ -132,12 +132,15 @@ class Reader {
                 if ($c == self::END_MAP) {
                     $this->queue->dequeue();
                     $cl = $this->conf->getString(Configuration::CLASS_PROPERTY, Configuration::DEFAULT_CLASS_PROPERTY_VALUE);
+                    $p = new Pair($c, $m);
                     if (isset($m[$cl])) {
                         $o = $this->createClass($m);
-                        $c = $this->in->nextChar();
-                        return new Pair($c, $o);
+                        $p = new Pair($c, $o);
                     }
-                    return new Pair($c, $m);
+                    if (false !== ($ch = $this->in->nextChar())) {
+                        $p->setLeft($ch);
+                    }
+                    return $p;
                 }
                 break;
             case self::START_ARRAY:
@@ -146,7 +149,9 @@ class Reader {
                 $c = $this->parseList($l);
                 if ($c == self::END_ARRAY) {
                     $this->queue->dequeue();
-                    $c = $this->in->nextChar();
+                    if (false !== ($ch = $this->in->nextChar())) {
+                        $c = $ch;
+                    }
                     return new Pair($c, $l);
                 }
                 break;
@@ -213,13 +218,13 @@ class Reader {
         while (false !== ($c = $this->in->nextChar())) {
             if ($c == self::END_MAP) {
                 return $c;
-            } else {
+            } else if ($c != self::SPACE_CHAR && $c != self::TAB_CHAR && $c != "\r" && $c != "\n") {
                 $sb = "";
                 // searching key
                 do {
                     if ($c === false)
                         throw new \Exception("Reached end of stream - un-parsed data");
-                    if ($c != self::ELEM_DELIM)
+                    if ($c != self::ELEM_DELIM && $c != "\r" && $c != "\n")
                         $sb = $sb . $c;
                 } while (false !== ($c = $this->in->nextChar()) && $c != self::VALUE_DELIM);
                 $key = trim($sb);
@@ -251,7 +256,7 @@ class Reader {
         while (false !== ($c = $this->in->nextChar())) {
             if ($c == self::END_ARRAY) {
                 return $c;
-            } else if ($c == self::ELEM_DELIM || $c == self::VALUE_DELIM) {
+            } else if ($c == self::SPACE_CHAR || $c == self::TAB_CHAR || $c == self::ELEM_DELIM || $c == self::VALUE_DELIM || $c == "\r" || $c == "\n") {
                 // do nothing
             } else {
                 $p = $this->parseListInnerElement($c);

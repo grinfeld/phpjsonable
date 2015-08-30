@@ -105,5 +105,10 @@ class ReaderTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals("grinfeld\\phpjsonable\\utils\\Pair", get_class($result), "should " . get_class($result) . " == grinfeld\\phpjsonable\\utils\\Pair");
         $this->assertEquals(100, $result->getLeft(), "should " . $result->getLeft() . " == 100");
         $this->assertEquals("Test", $result->getRight(), "should " . $result->getRight() . " == Test");
+
+        $str = "  {\r\n\"key1\":  \"hello\"\r\n  }";
+        $fp = new StringInputStream($str);
+        $res = (new Reader($fp))->parse();
+        $this->assertEquals("hello", $res["key1"], "should " . $res["key1"] . " == hello");
     }
 }
