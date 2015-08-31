@@ -26,7 +26,7 @@
     if (isset($composer["require"])) {
         while(list($library, $ver) = each($composer["require"])) {
             if (file_exists($dirName . "\\vendor\\" . $library)) {
-                $dir = $dirName . "\\vendor\\" . $library;
+                $dir = $dirName . "\\vendor\\" . $library . "\\src";
                 $rp = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
             }
             foreach ($rp as $file) {
