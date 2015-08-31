@@ -221,11 +221,15 @@ class Reader {
             } else if ($c != self::SPACE_CHAR && $c != self::TAB_CHAR && $c != "\r" && $c != "\n") {
                 $sb = "";
                 // searching key
+                $prevC = $c;
                 do {
                     if ($c === false)
                         throw new \Exception("Reached end of stream - un-parsed data");
-                    if ($c != self::ELEM_DELIM && $c != "\r" && $c != "\n")
+                    if ($prevC == "\\" && $c == "\\") {
+
+                    } else if ($c != self::ELEM_DELIM && $c != "\r" && $c != "\n")
                         $sb = $sb . $c;
+                    $prevC = $c;
                 } while (false !== ($c = $this->in->nextChar()) && $c != self::VALUE_DELIM);
                 $key = trim($sb);
                 if (self::startsWith($key, self::CHAR_CHAR) || self::startsWith($key, self::STRING_CHAR))
