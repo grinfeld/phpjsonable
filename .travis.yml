@@ -8,4 +8,6 @@ php:
   - 7.0
   - nightly
 
+before_script: composer install  
+  
 script: phpunit --configuration $DB.phpunit.xml
