@@ -19,7 +19,7 @@ class StreamInputStreamTest extends PHPUnit_Framework_TestCase {
         // in windows the last char is eof, but in linux is always end of line before eof
         if ($c == '\r\n' || $c == '\n')
             $c = $in->nextChar();
-        $this->assertEquals(false, $in->isReady(), "End of string. Should return NOT isReady: " . chr($c));
+        $this->assertEquals(false, $in->isReady(), "End of string. Should return NOT isReady: " . ord($c));
     }
 
     public function testNextChar() {
