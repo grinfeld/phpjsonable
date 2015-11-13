@@ -18,6 +18,8 @@ There are 2 options:
 1. via composer (see https://packagist.org/packages/grinfeld/phpjsonable)
 2. phar - download grinfeld_phpjsonable.phar and include it into your code and add TMLoader::get() to initialize autoload
 
+**Using phpjsonable**
+
 So, let's start with few simple examples: Assume you have php array:
 
     $ar = ["hello", "bye", "something else"];
