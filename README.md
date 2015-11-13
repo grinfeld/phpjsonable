@@ -14,6 +14,7 @@ In such case you don't need my library :)
 **Installation**
 
 There are 2 options:
+
 1. via composer (see https://packagist.org/packages/grinfeld/phpjsonable)
 2. phar - download grinfeld_phpjsonable.phar and include it into your code and add TMLoader::get() to initialize autoload
 
