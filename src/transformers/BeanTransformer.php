@@ -46,9 +46,7 @@ class BeanTransformer implements Transformer {
                     $refMethod = new \ReflectionMethod($clazz, "get" . ucfirst($prop->getName()));
                     if ($refMethod->isPublic())
                         $val = $refMethod->invoke($obj);
-                } catch (\Exception $e) {
-                    echo $e->getMessage();
-                }
+                } catch (\Exception $e) {}
                 if ($val == null) {
                     $prop->setAccessible(true);
                     $val = $prop->getValue($obj);
