@@ -20,6 +20,10 @@ class MapTransformer implements Transformer {
     public function match($obj) {
         if (!is_array($obj))
             return false;
+
+        if (is_object($obj))
+            return false;
+
         return true;
     }
 

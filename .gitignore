@@ -3,3 +3,4 @@ composer.lock
 phpjsonable.iml
 .idea/*
 vendor/*
+index.php

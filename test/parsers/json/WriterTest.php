@@ -127,5 +127,17 @@ class WriterTest extends PHPUnit_Framework_TestCase {
         Json::encode($pair, $output, (new Configuration())->push(Configuration::INCLUDE_CLASS_NAME_PROPERTY, "true")->push(Configuration::EXCLUDE_NULL_PROPERTY, "false"));
         $this->assertEquals($expected, $output->toString(), "Should be $expected");
 
+        $output = new StringOutputStream();
+        Json::encode(new SimpleBean(), $output, (new Configuration())->push(Configuration::INCLUDE_CLASS_NAME_PROPERTY, "false")->push(Configuration::EXCLUDE_NULL_PROPERTY, "false"));
+        $this->assertEquals("{\"val\":\"123\"}", $output->toString(), "Should be 123");
     }
 }
+
+    class SimpleBean {
+        protected $val = "1";
+
+        /**
+         * @return mixed
+         */
+        public function getVal() { return "123"; }
+    }

@@ -40,8 +40,19 @@ class BeanTransformer implements Transformer {
             $clazzName = $conf->getString(Configuration::CLASS_PROPERTY, Configuration::DEFAULT_CLASS_PROPERTY_VALUE);
             $clazzStrategy = $conf->getString(Configuration::CLASS_TYPE_PROPERTY, LanguageStrategyFactory::LANG_PHP);
             foreach($props as $prop) {
-                $prop->setAccessible(true);
-                $val = $prop->getValue($obj);
+                // check getter
+                $val = null;
+                try {
+                    $refMethod = new \ReflectionMethod($clazz, "get" . ucfirst($prop->getName()));
+                    if ($refMethod->isPublic())
+                        $val = $refMethod->invoke($obj);
+                } catch (\Exception $e) {
+                    echo $e->getMessage();
+                }
+                if ($val == null) {
+                    $prop->setAccessible(true);
+                    $val = $prop->getValue($obj);
+                }
                 if ($excludeNull === false || ($val !== null || $val !== "")) {
                     if ($prop->getName() != $clazzName) {
                         if ($i != 0)
