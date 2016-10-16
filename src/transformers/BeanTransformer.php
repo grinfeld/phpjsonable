@@ -47,7 +47,7 @@ class BeanTransformer implements Transformer {
                     if ($refMethod->isPublic())
                         $val = $refMethod->invoke($obj);
                 } catch (\Exception $e) {}
-                if ($val == null) {
+                if (!isset($val)) {
                     $prop->setAccessible(true);
                     $val = $prop->getValue($obj);
                 }
