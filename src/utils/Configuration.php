@@ -9,6 +9,7 @@ namespace grinfeld\phpjsonable\utils;
 class Configuration {
 
     const CLASS_PROPERTY = "class_property";
+
     const DEFAULT_CLASS_PROPERTY_VALUE = "class";
 
     const INCLUDE_CLASS_NAME_PROPERTY = "include_class";
@@ -16,6 +17,18 @@ class Configuration {
     const EXCLUDE_NULL_PROPERTY = "exclude_null";
 
     const CLASS_TYPE_PROPERTY = "classname_strategy";
+
+    const DATE_STRATEGY_PROPERTY = "date_strategy";
+
+    const DATE_STRATEGY_TIMESTAMP = "timestamp";
+
+    const DATE_STRATEGY_STRING = "string";
+
+    const DEFAULT_DATE_STRATEGY = self::DATE_STRATEGY_TIMESTAMP;
+
+    const DATE_FORMAT_PROPERTY = "date_format";
+
+    const DEFAULT_DATE_FORMAT = "Y-m-d H:i:s"; // default mysql format
 
     protected $properties = array();
 

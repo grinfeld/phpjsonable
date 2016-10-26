@@ -41,6 +41,7 @@ class TransformerFactory {
             new StringTransformer(),
             new ArrayTransformer(),
             new MapTransformer(),
+            new DatetimeTransformer(),
             new BeanTransformer()
         );
     }

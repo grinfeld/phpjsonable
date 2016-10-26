@@ -130,6 +130,12 @@ class WriterTest extends PHPUnit_Framework_TestCase {
         $output = new StringOutputStream();
         Json::encode(new SimpleBean(), $output, (new Configuration())->push(Configuration::INCLUDE_CLASS_NAME_PROPERTY, "false")->push(Configuration::EXCLUDE_NULL_PROPERTY, "false"));
         $this->assertEquals("{\"val\":\"123\"}", $output->toString(), "Should be 123");
+
+        $date = new DateTime('now');
+        $timestamp = $date->getTimestamp();
+        $output = new StringOutputStream();
+        Json::encode(array("date" => $date), $output);
+        $this->assertEquals("{\"date\":$timestamp}", $output->toString(), "Should be $timestamp");
     }
 }
 
