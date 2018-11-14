@@ -16,7 +16,7 @@ class ArrayTransformer implements Transformer {
             return false;
         $i = 0;
         // tests if array is sequence array or assoc array
-        while(list($ind, $key) = each($obj)) {
+        foreach($obj as $ind => $val) {
             if (!is_int($ind) || $ind != $i) {
                 return false;
             }
