@@ -29,7 +29,7 @@ class LanguageStrategyFactory {
     public static function addStrategy($type, LanguageStrategy $obj) {
         $newInstances = array();
         // copying existed
-        while (list($key, $val) = each(self::$instances)) {
+        foreach (self::$instances as $key => $val) {
             $newInstances["" . $key] = $val;
         }
         $newInstances["" . $type] = $obj;
