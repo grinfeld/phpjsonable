@@ -21,12 +21,12 @@
   },
   "autoload": {
     "psr-4": {
-      "grinfeld\\phpjsonable\\": "src"
+      "grinfeld/phpjsonable/": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "grinfeld\\phpjsonable\\test\\": "test"
+      "grinfeld/phpjsonable/test/": "test"
     }
   }
 }

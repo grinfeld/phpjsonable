@@ -10,30 +10,31 @@
     $pharName = $name . '.phar';
     $phar = new Phar($pharName);
     $dirName = dirname(__FILE__);
-    while(list($suffix, $src) = each($sources)) {
-        $dir = $dirName . "\\" . $src;
+    foreach ($sources as $suffix => $src) {
+        $dir = $dirName . "/" . $src;
         $rp = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
         foreach ($rp as $file) {
             if ($file->isFile() && $file->getFilename() != ".." && $file->getFilename() != ".") {
                 $pathBefore = substr($file->getPath(), 0, strlen($dir));
                 $pathAfter = substr($file->getPath(), strlen($dir) + 1);
-                $pathTo = "\\" . $suffix . ($pathAfter !== false ? ($pathAfter . "\\") : "") . $file->getFilename();
+                $pathTo = "/" . $suffix . ($pathAfter !== false ? ($pathAfter . "/") : "") . $file->getFilename();
+                echo " ----- " . $pathTo . " ------\n";
                 $phar->addFromString($pathTo, file_get_contents($file->getPath() . "/" . $file->getFilename()));
             }
         }
     }
 
     if (isset($composer["require"])) {
-        while(list($library, $ver) = each($composer["require"])) {
-            if (file_exists($dirName . "\\vendor\\" . $library)) {
-                $dir = $dirName . "\\vendor\\" . $library . "\\src";
+        foreach ($composer["require"] as $library => $ver) {
+            if (file_exists($dirName . "/vendor/" . $library)) {
+                $dir = $dirName . "/vendor/" . $library . "/src";
                 $rp = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
             }
             foreach ($rp as $file) {
                 if ($file->isFile() && $file->getFilename() != ".." && $file->getFilename() != ".") {
                     $pathBefore = substr($file->getPath(), 0, strlen($dir));
                     $pathAfter = substr($file->getPath(), strlen($dir) + 1);
-                    $pathTo = "\\" . $suffix . ($pathAfter !== false ? ($pathAfter . "\\") : "") . $file->getFilename();
+                    $pathTo = "/" . $suffix . ($pathAfter !== false ? ($pathAfter . "/") : "") . $file->getFilename();
                     $phar->addFromString($pathTo, file_get_contents($file->getPath() . "/" . $file->getFilename()));
                 }
             }
