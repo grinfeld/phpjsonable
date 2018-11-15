@@ -2,7 +2,7 @@
     require "vendor/autoload.php";
 
     $composer = \grinfeld\phpjsonable\parsers\json\Json::decode(new \grinfeld\phpjsonable\utils\streams\StringInputStream(file_get_contents("composer.json")));
-    $name = preg_replace("/[\\/]/", "_", $composer["name"]);
+    $name = preg_replace('/[\\/]/', '_', $composer["name"]);
     $sources = array();
     if (isset($composer["autoload"]) && isset($composer["autoload"]["psr-4"])) {
         $sources = $composer["autoload"]["psr-4"];
@@ -11,6 +11,8 @@
     $phar = new Phar($pharName);
     $dirName = dirname(__FILE__);
     foreach ($sources as $suffix => $src) {
+        $suffix = preg_replace('/[\\\\]/', '/', $suffix);
+        $src = preg_replace('/[\\\\]/', '/', $src);
         $dir = $dirName . "/" . $src;
         $rp = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
         foreach ($rp as $file) {
@@ -18,7 +20,6 @@
                 $pathBefore = substr($file->getPath(), 0, strlen($dir));
                 $pathAfter = substr($file->getPath(), strlen($dir) + 1);
                 $pathTo = "/" . $suffix . ($pathAfter !== false ? ($pathAfter . "/") : "") . $file->getFilename();
-                echo " ----- " . $pathTo . " ------\n";
                 $phar->addFromString($pathTo, file_get_contents($file->getPath() . "/" . $file->getFilename()));
             }
         }
