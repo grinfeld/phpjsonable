@@ -1,6 +1,5 @@
 {
   "name": "grinfeld/phpjsonable",
-  "version": "1.0.6",
   "type": "library",
   "description" : "Simple json encode and decode object",
   "keywords": ["json", "json_encode", "json_decode"],
